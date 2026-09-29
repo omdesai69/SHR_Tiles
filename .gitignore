@@ -1,0 +1,16 @@
+# OS metadata
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor directories
+.vscode/
+.idea/
+
+# Logs & temp files
+*.log
+*.tmp
+
+# Heavy raw factory PDFs (over 100MB; excluded for GitHub & Vercel deployment limits)
+By Order/
+Symbol and Address/
