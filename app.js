@@ -272,7 +272,7 @@ function cacheDOM() {
     'stockGrid', 'orderGrid', 'stockCounter', 'stockSearch', 'clearSearchBtn',
     'tileModal', 'modalCloseBtn', 'certModal', 'certCloseBtn', 'btnViewCert',
     'modalImg', 'modalStatus', 'modalCode', 'modalName', 'modalDesc', 'modalSpecs', 'modalWhatsAppBtn', 'modalPdfBtn',
-    'mobileToggle', 'drawerCloseBtn', 'navLinks', 'navBackdrop', 'mobileBottomLangLabel',
+    'mobileToggle', 'drawerCloseBtn', 'navLinks', 'mobileBottomLangLabel',
     'calcArea', 'calcTileSize', 'calcWastage', 'wastageDisplay',
     'resGrossArea', 'resTotalBoxes', 'resTotalTiles', 'resActualCoverage', 'resTotalWeight', 'resVehicleText', 'btnShareCalc',
     'zoneTransitTitle', 'zoneTransitRoute', 'zoneTransitTime',
@@ -915,16 +915,15 @@ function setupModals() {
 function setupMobileNav() {
   const closeDrawer = () => {
     if (dom.navLinks) dom.navLinks.classList.remove('open');
-    if (dom.navBackdrop) dom.navBackdrop.classList.remove('open');
     document.body.style.overflow = '';
   };
 
   const openDrawer = () => {
     if (dom.navLinks) dom.navLinks.classList.add('open');
-    if (dom.navBackdrop) dom.navBackdrop.classList.add('open');
     document.body.style.overflow = 'hidden';
   };
 
+  // Hamburger toggle
   if (dom.mobileToggle) {
     dom.mobileToggle.addEventListener('click', (e) => {
       e.preventDefault();
@@ -933,6 +932,7 @@ function setupMobileNav() {
     });
   }
 
+  // Close button inside drawer
   if (dom.drawerCloseBtn) {
     dom.drawerCloseBtn.addEventListener('click', (e) => {
       e.preventDefault();
@@ -941,14 +941,16 @@ function setupMobileNav() {
     });
   }
 
-  if (dom.navBackdrop) {
-    dom.navBackdrop.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      closeDrawer();
-    });
-  }
+  // Close drawer when tapping OUTSIDE it (replaces the backdrop element entirely)
+  document.addEventListener('click', (e) => {
+    if (!dom.navLinks?.classList.contains('open')) return;
+    // If click is inside the drawer or on the toggle button, don't close
+    if (dom.navLinks.contains(e.target)) return;
+    if (dom.mobileToggle?.contains(e.target)) return;
+    closeDrawer();
+  });
 
+  // Nav links close drawer and scroll to section
   document.querySelectorAll('.nav-link').forEach(link => {
     link.addEventListener('click', (e) => {
       const href = link.getAttribute('href');

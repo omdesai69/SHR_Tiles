@@ -1203,19 +1203,6 @@ html[lang="hi"] .lang-toggle-btn .lang-opt { font-family: 'Mukta', sans-serif; }
     font-size: 1.15rem;
     margin-left: auto;
   }
-  .nav-backdrop {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.45);
-    z-index: 1001;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.28s ease;
-  }
-  .nav-backdrop.open { opacity: 1; pointer-events: auto; }
   .nav-links {
     position: fixed;
     top: 0;
@@ -1234,19 +1221,14 @@ html[lang="hi"] .lang-toggle-btn .lang-opt { font-family: 'Mukta', sans-serif; }
     border-left: 1px solid var(--border);
     display: flex;
     box-shadow: -8px 0 30px rgba(0, 0, 0, 0.18);
-    z-index: 1005;
+    z-index: 99999;
     transform: translateX(105%);
     transition: transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    pointer-events: auto;
-    touch-action: pan-y;
   }
   .nav-links.open { transform: translateX(0); }
   .nav-links > li { width: 100%; list-style: none; }
-  .nav-links * { pointer-events: auto; }
-  .drawer-close-btn { cursor: pointer; pointer-events: auto; -webkit-tap-highlight-color: transparent; }
-  .nav-link { cursor: pointer; pointer-events: auto; -webkit-tap-highlight-color: transparent; }
   .mobile-lang-item { display: block !important; width: 100%; }
   .mobile-drawer-header {
     display: flex;
