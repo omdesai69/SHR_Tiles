@@ -13,7 +13,12 @@ TILE_CATALOG.forEach(t => {
   tileMap.set(t.id, t);
 });
 
-let currentLang = localStorage.getItem('shree_hari_lang') || 'hi';
+const LANG_STORAGE_KEY = 'shree_hari_lang_v3';
+let currentLang = localStorage.getItem(LANG_STORAGE_KEY);
+if (currentLang !== 'hi' && currentLang !== 'en') {
+  currentLang = 'en'; // Strict default is always English
+  try { localStorage.setItem(LANG_STORAGE_KEY, 'en'); } catch (_) {}
+}
 
 const TRANSLATIONS = {
   brand_title: { en: 'SHREE HARI', hi: 'श्री हरि' },
@@ -304,17 +309,47 @@ function init() {
  * Language Switcher Setup & Execution
  */
 function setupLanguageSwitcher() {
-  const toggleLanguage = () => setLanguage(currentLang === 'hi' ? 'en' : 'hi');
-  ['langToggleBtn', 'drawerLangToggleBtn', 'mobileActionLang'].forEach(id => {
-    const el = $(id);
-    if (el) el.addEventListener('click', toggleLanguage);
+  // Direct click / tap on any .lang-opt button immediately sets that exact language
+  document.querySelectorAll('.lang-opt').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const targetLang = btn.dataset.lang;
+      if (targetLang) setLanguage(targetLang);
+    });
   });
+
+  // Container click delegation for header and drawer toggles
+  ['langToggleBtn', 'drawerLangToggleBtn'].forEach(id => {
+    const el = $(id);
+    if (!el) return;
+    el.addEventListener('click', (e) => {
+      const btn = e.target.closest('.lang-opt');
+      if (btn && btn.dataset.lang) {
+        setLanguage(btn.dataset.lang);
+      } else {
+        setLanguage(currentLang === 'hi' ? 'en' : 'hi');
+      }
+    });
+  });
+
+  // Mobile persistent bottom action bar button toggles language
+  const mobileActionLang = $('mobileActionLang');
+  if (mobileActionLang) {
+    mobileActionLang.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setLanguage(currentLang === 'hi' ? 'en' : 'hi');
+    });
+  }
+
   setLanguage(currentLang);
 }
 
 function setLanguage(lang) {
+  if (lang !== 'hi' && lang !== 'en') lang = 'en';
   currentLang = lang;
-  localStorage.setItem('shree_hari_lang', lang);
+  try { localStorage.setItem(LANG_STORAGE_KEY, lang); } catch (_) {}
   document.documentElement.lang = lang;
 
   i18nElements.forEach(el => {

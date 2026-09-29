@@ -54,12 +54,12 @@
               <button type="button" class="drawer-close-btn" id="drawerCloseBtn" aria-label="Close Menu">✕</button>
             </div>
             <div class="mobile-lang-wrap">
-              <span class="mobile-lang-label" data-i18n="lang_select_label">भाषा / Language</span>
-              <button type="button" class="lang-toggle-btn" id="drawerLangToggleBtn" aria-label="Switch Language / भाषा बदलें">
-                <span class="lang-opt" data-lang="en">EN</span>
+              <span class="mobile-lang-label" data-i18n="lang_select_label">Language / भाषा</span>
+              <div class="lang-toggle-btn" id="drawerLangToggleBtn" role="group" aria-label="Switch Language / भाषा बदलें">
+                <button type="button" class="lang-opt active" data-lang="en" aria-label="Switch to English">EN</button>
                 <span class="lang-divider">|</span>
-                <span class="lang-opt active" data-lang="hi">हिंदी</span>
-              </button>
+                <button type="button" class="lang-opt" data-lang="hi" aria-label="हिंदी में बदलें">हिंदी</button>
+              </div>
             </div>
           </li>
           <li><a href="#distribution-model" class="nav-link" data-i18n="nav_works">How It Works</a></li>
@@ -72,11 +72,11 @@
 
         <div class="nav-actions">
           <div class="lang-switch-wrap">
-            <button type="button" class="lang-toggle-btn" id="langToggleBtn" aria-label="Switch Language / भाषा बदलें" title="Switch Language / भाषा बदलें">
-              <span class="lang-opt" data-lang="en">EN</span>
+            <div class="lang-toggle-btn" id="langToggleBtn" role="group" aria-label="Switch Language / भाषा बदलें" title="Switch Language / भाषा बदलें">
+              <button type="button" class="lang-opt active" data-lang="en" aria-label="Switch to English">EN</button>
               <span class="lang-divider">|</span>
-              <span class="lang-opt active" data-lang="hi">हिंदी</span>
-            </button>
+              <button type="button" class="lang-opt" data-lang="hi" aria-label="हिंदी में बदलें">हिंदी</button>
+            </div>
           </div>
           <a href="https://wa.me/919021560608?text=Hello%20Dilip%20ji,%20I%20am%20a%20tile%20retailer/contractor.%20I%20would%20like%20to%20inquire%20about%20wholesale%20rates." target="_blank" rel="noopener" class="btn btn-whatsapp-subtle">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -752,7 +752,7 @@
             </div>
           </div>
 
-          <div style="display: flex; gap: 0.75rem; margin-top: 2rem;">
+          <div class="contact-card-actions">
             <a href="https://maps.app.goo.gl/pzh3uj48oDYiQY2a7" target="_blank" rel="noopener" class="btn btn-dark" style="flex: 1;">
               <span data-i18n="contact_maps_btn">Directions on Maps</span>
             </a>
@@ -1035,7 +1035,7 @@
         <line x1="2" y1="12" x2="22" y2="12"></line>
         <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
       </svg>
-      <span id="mobileBottomLangLabel">EN</span>
+      <span id="mobileBottomLangLabel">English</span>
     </button>
   </nav>
 
