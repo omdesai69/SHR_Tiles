@@ -108,8 +108,8 @@ assert(
   'CSP strictly limits default sources to self'
 );
 assert(
-  htmlContent.includes("frame-ancestors 'none'"),
-  'CSP blocks iframe embedding (Anti-Clickjacking)'
+  !htmlContent.includes('onerror='),
+  'index.html contains zero inline onerror attributes (Preserves fallback under CSP)'
 );
 
 // Check OpenGraph specifications for WhatsApp
@@ -152,17 +152,31 @@ assert(
   'Partner Form contains anti-bot honeypot trap'
 );
 
-console.log('\n--- 6. Edge Security Headers Files Audit ---');
+console.log('\n--- 6. Edge Security Headers Files Audit (Framing Protection) ---');
 const headersContent = readFileSync(resolve(ROOT_DIR, '_headers'), 'utf-8');
 assert(headersContent.includes('Strict-Transport-Security: max-age=63072000; includeSubDomains; preload'), '_headers configures HSTS Preload');
-assert(headersContent.includes('X-Frame-Options: DENY'), '_headers configures X-Frame-Options: DENY');
+assert(headersContent.includes('X-Frame-Options: DENY'), '_headers configures framing protection via X-Frame-Options: DENY');
+assert(headersContent.includes("frame-ancestors 'none'"), '_headers configures framing protection via CSP frame-ancestors none');
 assert(headersContent.includes('X-Content-Type-Options: nosniff'), '_headers configures nosniff');
 assert(headersContent.includes('X-Robots-Tag: noindex, nofollow, noarchive'), '_headers shields /Certificate/* from crawlers');
 
 const vercelContent = readFileSync(resolve(ROOT_DIR, 'vercel.json'), 'utf-8');
 const vercelJson = JSON.parse(vercelContent);
 assert(Array.isArray(vercelJson.headers), 'vercel.json contains headers configuration');
-assert(vercelJson.headers.some(h => h.source === '/(.*)'), 'vercel.json applies security headers globally');
+const globalHeaders = vercelJson.headers.find(h => h.source === '/(.*)');
+assert(globalHeaders && Array.isArray(globalHeaders.headers), 'vercel.json applies security headers globally');
+
+// Assert framing protection in response-header configuration
+const vFrameOptions = globalHeaders.headers.find(h => h.key === 'X-Frame-Options');
+assert(vFrameOptions && vFrameOptions.value === 'DENY', 'vercel.json configures framing protection via X-Frame-Options: DENY');
+
+const vCsp = globalHeaders.headers.find(h => h.key === 'Content-Security-Policy');
+assert(vCsp && vCsp.value.includes("frame-ancestors 'none'"), 'vercel.json configures framing protection via CSP frame-ancestors none');
+
+console.log('\n--- 7. Dynamic Application & CSP Hardening Audit ---');
+const appContent = readFileSync(resolve(ROOT_DIR, 'app.js'), 'utf-8');
+assert(!appContent.includes('onerror='), 'app.js contains zero inline onerror event handlers (CSP compliance)');
+assert(appContent.includes('fallbackApplied') && appContent.includes('addEventListener'), 'app.js implements unobtrusive capture-phase image fallback listener');
 
 console.log(`\n========================================`);
 console.log(`AUDIT COMPLETE: ${passedTests} / ${totalTests} assertions passed (${Math.round((passedTests / totalTests) * 100)}%).`);

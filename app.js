@@ -19,6 +19,27 @@ if (typeof window !== 'undefined' && window.trustedTypes && window.trustedTypes.
   }
 }
 
+// 2. Unobtrusive Image Error Fallback Handler (Preserves fallback under strict CSP script-src 'self')
+if (typeof window !== 'undefined') {
+  window.addEventListener(
+    'error',
+    (event) => {
+      const target = event.target;
+      if (
+        target &&
+        target.tagName === 'IMG' &&
+        (target.classList.contains('tile-thumb-img') || target.classList.contains('modal-artwork-img'))
+      ) {
+        if (!target.dataset.fallbackApplied) {
+          target.dataset.fallbackApplied = 'true';
+          target.src = 'assets/img/hero_bg.jpg';
+        }
+      }
+    },
+    true // Capture phase: image loading error events do not bubble
+  );
+}
+
 // 2. Zero-Allocation HTML Entity Sanitizer (CWE-79 & CWE-116 Immunity)
 const HTML_ENTITIES = Object.freeze({
   '&': '&amp;',
@@ -578,7 +599,6 @@ function createTileCardHTML(tile) {
           class="tile-thumb-img"
           loading="lazy"
           decoding="async"
-          onerror="this.onerror=null; this.src='assets/img/hero_bg.jpg';"
         >
         <div class="badge-status ${badgeClass}">
           <span class="status-pulse-dot"></span>
