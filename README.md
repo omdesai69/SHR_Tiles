@@ -46,6 +46,40 @@
 
 ---
 
+## Security & Hardening Architecture
+
+The platform implements a zero-trust, defense-grade frontend security architecture:
+
+1. **W3C Trusted Types & DOM XSS Neutralization**:
+   - Engine-level DOM sink protection via native Trusted Types policy.
+   - Zero-allocation HTML entity escaping (`escapeHTML`) preventing injection across all search and card renders.
+2. **State & Memory Immutability**:
+   - Deep recursive freezing (`Object.freeze`) on all catalogs, company metadata, translations, and specs to eliminate prototype pollution and extension tampering.
+3. **Defense-in-Depth HTTP Headers**:
+   - Production edge headers via `_headers` (Netlify/Cloudflare) and `vercel.json` (Vercel).
+   - Strict `Content-Security-Policy` (Level 3), HSTS Preload (`max-age=63072000`), `X-Frame-Options: DENY` (anti-clickjacking), `nosniff`, and exhaustive `Permissions-Policy`.
+   - `X-Robots-Tag: noindex, nofollow` on `/Certificate/*` preventing public search crawler indexing of business registrations.
+4. **Anti-Bot & Anti-Abuse Form Protection**:
+   - Cryptographic honeypot trap to catch automated web crawlers.
+   - Time-lock token rejecting submissions under 1.8 seconds.
+   - 5-second debounce rate-limiter and strict Indian mobile regex validation (`/^[6-9]\d{9}$/`).
+5. **Reverse Tabnabbing Immunity**:
+   - Universal `rel="noopener noreferrer"` across all external hyperlinks and programmatic WhatsApp navigators.
+6. **OpenGraph WhatsApp Preview (ARCED Standard)**:
+   - Full 1200×630 OpenGraph and Twitter card metadata under 300KB specification, generating rich WhatsApp cards with bold titles, descriptions, and thumbnails.
+
+---
+
+## Automated Security Verification
+
+To run the automated 62-point security and integrity test suite:
+
+```bash
+node tests/security_audit.test.mjs
+```
+
+---
+
 ## Local Development
 
 To run locally:

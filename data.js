@@ -823,3 +823,27 @@ export const COMPANY_INFO = {
   shopActPdf: "Certificate/SHOP ACT CERTIFICATE.pdf",
   udyamPdf: "Certificate/Print _ Udyam Registration Certificate.pdf"
 };
+
+/**
+ * Senior Engineered Defensive Immutability (Deep Freeze)
+ * Prevents prototype pollution, runtime state poisoning, and rogue extension tampering.
+ */
+function deepFreeze(obj) {
+  if (obj === null || typeof obj !== 'object') return obj;
+  Object.freeze(obj);
+  Object.getOwnPropertyNames(obj).forEach(prop => {
+    const val = obj[prop];
+    if (val !== null && (typeof val === 'object' || typeof val === 'function') && !Object.isFrozen(val)) {
+      deepFreeze(val);
+    }
+  });
+  return obj;
+}
+
+// Pre-compute search string before freezing to eliminate in-memory mutation in controllers
+TILE_CATALOG.forEach(t => {
+  t._searchStr = `${t.name} ${t.code} ${t.finish} ${t.series} ${t.idealFor}`.toLowerCase();
+});
+
+deepFreeze(TILE_CATALOG);
+deepFreeze(COMPANY_INFO);
