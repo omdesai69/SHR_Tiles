@@ -436,10 +436,10 @@ function setupLanguageSwitcher() {
     });
   }
 
-  setLanguage(currentLang);
+  setLanguage(currentLang, false);
 }
 
-function setLanguage(lang) {
+function setLanguage(lang, updateGrids = true) {
   if (lang !== 'hi' && lang !== 'en') lang = 'en';
   currentLang = lang;
   try { localStorage.setItem(LANG_STORAGE_KEY, lang); } catch (_) {}
@@ -463,10 +463,12 @@ function setLanguage(lang) {
     dom.mobileBottomLangLabel.textContent = lang === 'hi' ? 'हिंदी' : 'English';
   }
 
-  renderGrid('stock');
-  renderGrid('order');
-  calculateFreight();
-  updateDeliveryZoneText();
+  if (updateGrids) {
+    renderGrid('stock');
+    renderGrid('order');
+    calculateFreight();
+    updateDeliveryZoneText();
+  }
 
   if (dom.calcTileSize?.options?.length >= 4) {
     const isHi = lang === 'hi';
@@ -811,6 +813,7 @@ function setupSearch() {
  */
 function setupCalculator() {
   if (!dom.calcArea || !dom.calcTileSize || !dom.calcWastage) return;
+  updateDeliveryZoneText();
 
   const updateCalc = () => calculateFreight();
 
