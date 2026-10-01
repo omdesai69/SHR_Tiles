@@ -18,3 +18,10 @@
 /Availaible*
   Cache-Control: public, max-age=604800, must-revalidate
 
+/*.js
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
+/*.css
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
+

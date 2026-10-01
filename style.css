@@ -38,7 +38,7 @@
   --shadow-card: 0 10px 30px -10px rgba(24, 26, 31, 0.06);
   --shadow-hover: 0 20px 40px -15px rgba(24, 26, 31, 0.12);
   --max-w: 1300px;
-  --transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  --transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; font-size: 16px; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; overflow-x: hidden; max-width: 100vw; }
@@ -67,6 +67,8 @@ img { max-width: 100%; height: auto; display: block; }
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border);
+  will-change: transform;
+  transform: translateZ(0);
   transition: var(--transition);
 }
 .brand-scroll-track {
@@ -383,6 +385,7 @@ html[lang="hi"] .lang-toggle-btn .lang-opt { font-family: 'Mukta', sans-serif; }
 .overlay-meta h4 { font-size: 0.92rem; color: var(--text-title); margin-bottom: 0.2rem; }
 .overlay-meta p { font-size: 0.76rem; color: var(--text-muted); }
 .section { padding: 3.5rem 0; border-bottom: 1px solid var(--border); position: relative; overflow: hidden; background: var(--canvas); }
+.section-deferred { content-visibility: auto; contain-intrinsic-size: auto none auto 700px; }
 .section .container { position: relative; z-index: 2; }
 .section-header { max-width: 680px; margin-bottom: 2.25rem; }
 .section-header.center { margin-left: auto; margin-right: auto; text-align: center; }
@@ -569,6 +572,8 @@ html[lang="hi"] .lang-toggle-btn .lang-opt { font-family: 'Mukta', sans-serif; }
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  will-change: transform;
+  transform: translateZ(0);
   transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
 }

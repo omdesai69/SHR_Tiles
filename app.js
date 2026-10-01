@@ -376,15 +376,26 @@ function init() {
   setupGridDelegation(dom.stockGrid);
   setupGridDelegation(dom.orderGrid);
   renderGrid('stock');
-  renderGrid('order');
   setupViewMoreButtons();
   setupFilterTabs();
   setupSearch();
-  setupCalculator();
   setupModals();
   setupMobileNav();
   setupPartnerForm();
   setupBrandInteractions();
+
+  // Instant Critical Path: Defer non-critical off-screen renders to idle frame (<50ms initial paint)
+  if (typeof requestIdleCallback === 'function') {
+    requestIdleCallback(() => {
+      renderGrid('order');
+      setupCalculator();
+    }, { timeout: 120 });
+  } else {
+    setTimeout(() => {
+      renderGrid('order');
+      setupCalculator();
+    }, 16);
+  }
 }
 
 /**
@@ -1222,10 +1233,16 @@ function setupPartnerForm() {
  */
 function setupBrandInteractions() {
   if (dom.brandScrollFill) {
+    let scrollTicking = false;
     window.addEventListener('scroll', () => {
-      const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
-      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      dom.brandScrollFill.style.width = `${height > 0 ? (winScroll / height) * 100 : 0}%`;
+      if (scrollTicking) return;
+      scrollTicking = true;
+      requestAnimationFrame(() => {
+        const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        dom.brandScrollFill.style.width = `${height > 0 ? (winScroll / height) * 100 : 0}%`;
+        scrollTicking = false;
+      });
     }, { passive: true });
   }
 
@@ -1244,7 +1261,7 @@ function setupBrandInteractions() {
         if (dom.heroWatermark) {
           const shiftX = ((xPct - 50) * -0.16).toFixed(1);
           const shiftY = ((yPct - 50) * -0.16).toFixed(1);
-          dom.heroWatermark.style.transform = `translate(calc(-50% + ${shiftX}px), calc(-50% + ${shiftY}px))`;
+          dom.heroWatermark.style.transform = `translate3d(calc(-50% + ${shiftX}px), calc(-50% + ${shiftY}px), 0)`;
         }
         heroTicking = false;
       });
@@ -1258,7 +1275,7 @@ function setupBrandInteractions() {
     dom.hero.addEventListener('mouseleave', () => {
       dom.heroGlow.style.setProperty('--glow-x', '65%');
       dom.heroGlow.style.setProperty('--glow-y', '45%');
-      if (dom.heroWatermark) dom.heroWatermark.style.transform = 'translate(-50%, -50%)';
+      if (dom.heroWatermark) dom.heroWatermark.style.transform = 'translate3d(-50%, -50%, 0)';
     });
 
     dom.hero.addEventListener('click', () => {
