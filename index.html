@@ -71,13 +71,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
   <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
+  <link rel="preload" as="image" href="assets/img/hero_bg.jpg" fetchpriority="high">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" type="image/jpeg" href="assets/img/logo.jpg">
 </head>
 <body>
-
-  <!-- Father's Official Company Crest: Global Full-Page Background Watermark -->
-  <div class="site-bg-watermark" aria-hidden="true"></div>
 
   <!-- Site Navigation Header -->
   <header class="site-header">
@@ -87,7 +85,7 @@
     <div class="container">
       <nav class="navbar">
         <a href="#hero" class="brand-wrapper">
-          <img src="assets/img/symbol_crest.png" alt="Shree Hari Marketing" class="brand-logo-img">
+          <img src="assets/img/symbol_crest.png" alt="Shree Hari Marketing" class="brand-logo-img" width="44" height="44">
           <div>
             <div class="brand-title" data-i18n="brand_title">SHREE HARI</div>
             <div class="brand-subtitle" data-i18n="brand_subtitle">Marketing • Wholesale Surfaces</div>
@@ -188,7 +186,7 @@
         </div>
 
         <div class="hero-visual-card">
-          <img src="assets/img/hero_bg.jpg" alt="Vitrified Outdoor Surfaces" class="hero-visual-img">
+          <img src="assets/img/hero_bg.jpg" alt="Vitrified Outdoor Surfaces" class="hero-visual-img" width="640" height="427" fetchpriority="high">
           <div class="hero-visual-overlay">
             <div class="overlay-meta">
               <h4 data-i18n="hero_warehouse_title">Beldare Patil Warehouse</h4>
@@ -331,7 +329,7 @@
           <p data-i18n="download_card_desc">High-resolution factory design sheets for showroom staff, architects, and retail clients.</p>
         </div>
         <div class="download-card-actions">
-          <a href="Availaible in stock/16x16 digital parking tiles 400x400mm.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-outline">
+          <a href="Availaible%20in%20stock/16x16%20digital%20parking%20tiles%20400x400mm.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-outline">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
               <polyline points="7 10 12 15 17 10"></polyline>
@@ -339,7 +337,7 @@
             </svg>
             <span data-i18n="pdf_parking_btn">400×400mm Parking PDF (13 MB)</span>
           </a>
-          <a href="Availaible in stock/2x2 porceliane tiles 600x600mm.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-outline">
+          <a href="Availaible%20in%20stock/2x2%20porceliane%20tiles%20600x600mm.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-outline">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
               <polyline points="7 10 12 15 17 10"></polyline>
@@ -532,7 +530,7 @@
             </div>
           </div>
 
-          <button id="btnShareCalc" class="btn btn-dark" style="width: 100%;">
+          <button type="button" id="btnShareCalc" class="btn btn-dark" style="width: 100%;">
             <span data-i18n="calc_share_btn">Share Calculation to WhatsApp</span>
           </button>
         </div>
@@ -937,7 +935,7 @@
   </footer>
 
   <!-- Modal / Tile Inspection Lightbox -->
-  <div class="modal-backdrop" id="tileModal">
+  <div class="modal-backdrop" id="tileModal" role="dialog" aria-modal="true" aria-labelledby="modalName">
     <div class="modal-dialog">
       <button class="modal-dismiss" id="modalCloseBtn" aria-label="Close Modal">&times;</button>
       <div class="modal-artwork">
@@ -976,12 +974,12 @@
   </div>
 
   <!-- Modal / Official Registrations -->
-  <div class="modal-backdrop" id="certModal">
+  <div class="modal-backdrop" id="certModal" role="dialog" aria-modal="true" aria-labelledby="certModalHeading">
     <div class="modal-dialog" style="grid-template-columns: 1fr; max-width: 840px;">
       <button class="modal-dismiss" id="certCloseBtn" aria-label="Close Modal">&times;</button>
       <div style="padding: 2.5rem;">
         <span class="section-label" data-i18n="cert_label">Business Licenses</span>
-        <h3 class="serif-font" style="font-size: 1.6rem; margin-bottom: 1.5rem;" data-i18n="cert_title">Government & Tax Registrations</h3>
+        <h3 id="certModalHeading" class="serif-font" style="font-size: 1.6rem; margin-bottom: 1.5rem;" data-i18n="cert_title">Government & Tax Registrations</h3>
         
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1.25rem; margin-bottom: 2rem;">
           <!-- GST Registration Card -->
@@ -1005,7 +1003,7 @@
               <p style="font-size: 0.86rem; color: var(--text-title); margin-bottom: 0.3rem;"><strong data-i18n="cert_reg_no_label">Reg No:</strong> UDYAM-MH-26-0240936</p>
               <p style="font-size: 0.78rem; color: var(--text-muted);">Govt. of India Enterprise</p>
             </div>
-            <a href="Certificate/Print _ Udyam Registration Certificate.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-outline" style="font-size: 0.78rem; padding: 0.35rem 0.75rem; margin-top: auto; align-self: flex-start;">
+            <a href="Certificate/Print%20_%20Udyam%20Registration%20Certificate.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-outline" style="font-size: 0.78rem; padding: 0.35rem 0.75rem; margin-top: auto; align-self: flex-start;">
               <span data-i18n="cert_open_udyam">Open Udyam PDF</span>
             </a>
           </div>
@@ -1018,7 +1016,7 @@
               <p style="font-size: 0.86rem; color: var(--text-title); margin-bottom: 0.3rem;"><strong data-i18n="cert_reg_id_label">Reg ID:</strong> 2331000317693784</p>
               <p style="font-size: 0.78rem; color: var(--text-muted);">Commercial Establishment</p>
             </div>
-            <a href="Certificate/SHOP ACT CERTIFICATE.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-outline" style="font-size: 0.78rem; padding: 0.35rem 0.75rem; margin-top: auto; align-self: flex-start;">
+            <a href="Certificate/SHOP%20ACT%20CERTIFICATE.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-outline" style="font-size: 0.78rem; padding: 0.35rem 0.75rem; margin-top: auto; align-self: flex-start;">
               <span data-i18n="cert_open_shop">Open Shop Act PDF</span>
             </a>
           </div>

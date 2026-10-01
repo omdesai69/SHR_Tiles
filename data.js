@@ -828,7 +828,7 @@ export const COMPANY_INFO = {
  * Senior Engineered Defensive Immutability (Deep Freeze)
  * Prevents prototype pollution, runtime state poisoning, and rogue extension tampering.
  */
-function deepFreeze(obj) {
+export function deepFreeze(obj) {
   if (obj === null || typeof obj !== 'object') return obj;
   Object.freeze(obj);
   Object.getOwnPropertyNames(obj).forEach(prop => {

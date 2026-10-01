@@ -4,7 +4,7 @@
  * Defense-Grade Hardening: W3C Trusted Types, Safe DOM Sinks, Cryptographic WhatsApp Navigation, Anti-Bot Traps
  */
 
-import { TILE_CATALOG, COMPANY_INFO } from './data.js';
+import { TILE_CATALOG, COMPANY_INFO, deepFreeze } from './data.js';
 
 // 1. W3C Trusted Types Policy Registration (Engine-Level DOM XSS Defense)
 if (typeof window !== 'undefined' && window.trustedTypes && window.trustedTypes.createPolicy) {
@@ -316,14 +316,14 @@ const TRANSLATIONS = {
   modal_inquire_rate: { en: 'Inquire Wholesale Rates', hi: 'थोक रेट की जानकारी लें' },
   modal_view_pdf: { en: 'View PDF Catalog', hi: 'PDF कैटलॉग देखें' }
 };
-Object.freeze(TRANSLATIONS);
+deepFreeze(TRANSLATIONS);
 
 // Packaging Specifications Matrix (Deep Frozen)
-const PACKAGING_SPECS = Object.freeze({
-  '400-stock': Object.freeze({ name: '400x400 mm Digital Parking', coverage: 8.61, weight: 18.5, pcs: 5 }),
-  '600-stock': Object.freeze({ name: '600x600 mm Porcelain GVT', coverage: 15.50, weight: 28.0, pcs: 4 }),
-  '400-16mm': Object.freeze({ name: '400x400 mm 16mm Heavy Duty', coverage: 6.88, weight: 24.5, pcs: 4 }),
-  '600-12mm': Object.freeze({ name: '600x600 mm 12mm Outdoor Vitrified', coverage: 11.62, weight: 29.5, pcs: 3 })
+const PACKAGING_SPECS = deepFreeze({
+  '400-stock': { name: '400x400 mm Digital Parking', coverage: 8.61, weight: 18.5, pcs: 5 },
+  '600-stock': { name: '600x600 mm Porcelain GVT', coverage: 15.50, weight: 28.0, pcs: 4 },
+  '400-16mm': { name: '400x400 mm 16mm Heavy Duty', coverage: 6.88, weight: 24.5, pcs: 4 },
+  '600-12mm': { name: '600x600 mm 12mm Outdoor Vitrified', coverage: 11.62, weight: 29.5, pcs: 3 }
 });
 
 // State & Selected Delivery Zone
@@ -509,7 +509,10 @@ function renderGrid(type) {
   const filtered = TILE_CATALOG.filter(tile => {
     if (tile.status !== status) return false;
     if (filter !== 'all-stock' && filter !== 'all-order' && tile.category !== filter) return false;
-    if (isStock && searchQuery && !tile._searchStr.includes(searchQuery)) return false;
+    if (isStock && searchQuery) {
+      const searchTokens = searchQuery.split(/\s+/).filter(Boolean);
+      if (!searchTokens.every(tok => tile._searchStr.includes(tok))) return false;
+    }
     return true;
   });
 
@@ -862,6 +865,11 @@ function calculateFreight() {
   const areaUnit = isHi ? 'वर्ग फीट' : 'sq.ft';
 
   if (dom.resGrossArea) dom.resGrossArea.textContent = `${Math.round(grossArea).toLocaleString('en-IN')} ${areaUnit}`;
+  if (dom.resTotalBoxes) {
+    dom.resTotalBoxes.textContent = isHi
+      ? `${boxes.toLocaleString('en-IN')} बॉक्स`
+      : `${boxes.toLocaleString('en-IN')} Boxes`;
+  }
   if (dom.resTotalTiles) {
     dom.resTotalTiles.innerHTML = isHi
       ? `${totalTiles.toLocaleString('en-IN')} पीस <small style="display:inline-block; font-size: 0.76rem; color: var(--text-subtle); font-weight: 400;">(${spec.pcs} पीस/बॉक्स)</small>`
@@ -982,10 +990,23 @@ function openTileModal(tile) {
   toggleModal(dom.tileModal, true);
 }
 
+let previousActiveElement = null;
+
 function toggleModal(modal, open) {
   if (!modal) return;
   modal.classList.toggle('open', open);
   document.body.style.overflow = open ? 'hidden' : '';
+
+  if (open) {
+    previousActiveElement = document.activeElement;
+    const focusable = modal.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+    if (focusable) {
+      setTimeout(() => focusable.focus(), 50);
+    }
+  } else if (previousActiveElement && typeof previousActiveElement.focus === 'function') {
+    previousActiveElement.focus();
+    previousActiveElement = null;
+  }
 }
 
 function setupModals() {

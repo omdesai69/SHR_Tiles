@@ -72,7 +72,7 @@ The platform implements a zero-trust, defense-grade frontend security architectu
 
 ## Automated Security Verification
 
-To run the automated 67-point security and integrity test suite:
+To run the automated 85-point security and integrity test suite:
 
 ```bash
 node tests/security_audit.test.mjs

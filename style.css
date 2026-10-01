@@ -52,7 +52,7 @@ body {
   position: relative;
   width: 100%;
 }
-.site-bg-watermark { display: none; }
+
 h1, h2, h3, h4, h5 { color: var(--text-title); font-weight: 600; line-height: 1.25; letter-spacing: -0.015em; }
 .serif-font { font-family: var(--font-serif); font-weight: 500; letter-spacing: -0.02em; }
 p { color: var(--text-body); font-size: 1rem; }
@@ -1289,7 +1289,7 @@ html[lang="hi"] .lang-toggle-btn .lang-opt { font-family: 'Mukta', sans-serif; }
 
 /* Mobile Devices & Bottom Action Bar (768px) */
 @media (max-width: 768px) {
-  .site-bg-watermark { display: none; }
+
   body { padding-bottom: 70px; }
   .site-header { background: var(--surface); backdrop-filter: none; -webkit-backdrop-filter: none; }
   .mobile-bottom-bar { display: flex; }
